@@ -10,23 +10,23 @@ def get_position(address):
         s.write(b"0gs")
         status = s.readline().decode("ascii").rstrip()
         if status != "0GS00":
-            raise IOError(f"Stage GetStatus returned {status}.")
+            raise IOError("Stage GetStatus returned {}.".format(status))
         s.write(b"0gp")
         position = s.readline().decode("ascii").rstrip()
         if position.startswith("0PO"):
-            print(f"Current stage position is: {position}, which is {int(position[3:], 16)}mm and "
-                  f"slot {int(position[3:], 16) // 31}")
+            print("Current stage position is: {}, which is {}mm and "
+                  "slot {}".format(position, int(position[3:], 16), int(position[3:], 16) // 31))
 
 
 def move_stage(pos, address):
     with serial.Serial(address) as s:
-        logger.info(f"Move to Position: {pos}.")
+        logger.info("Move to Position: {}.".format(pos))
         s.write(b"0gs")
 
         status = s.readline().decode("ascii").rstrip()
         if status != "0GS00":
-            logger.error(f"Stage GetStatus returned {status}. No move will be executed.")
-            raise IOError(f"Stage GetStatus returned {status}. No move will be executed.")
+            logger.error("Stage GetStatus returned {}. No move will be executed.".format(status))
+            raise IOError("Stage GetStatus returned {}. No move will be executed.".format(status))
         # requested position in absolute units of stage:
         req = pos * 31
 
@@ -36,7 +36,7 @@ def move_stage(pos, address):
         else:
             # convert absolute position to HEX
             req_hex = "%08X" % req
-            s.write(f"0ma{req_hex}".encode("ascii"))
+            s.write("0ma{}".format(req_hex).encode("ascii"))
         answer = s.readline().decode("ascii").rstrip()
         if answer.startswith("0PO"):
             # check that reported position is nearby requested position
@@ -44,11 +44,11 @@ def move_stage(pos, address):
             if abs(actual_position - req) < 2:
                 print("OK")
             else:
-                logger.error(f"Final position was {actual_position}, but requested was {req}.")
-                raise IOError(f"Final position was {actual_position}, but requested was {req}.")
+                logger.error("Final position was {}, but requested was {}.".format(actual_position, req))
+                raise IOError("Final position was {}, but requested was {}.".format(actual_position, req))
         else:
-            logger.error(f"Could not move stage to pos {pos}")
-            raise IOError(f"Could not move stage to pos {pos}")
+            logger.error("Could not move stage to pos {}".format(pos))
+            raise IOError("Could not move stage to pos {}".format(pos))
 
 
 if __name__ == "__main__":
