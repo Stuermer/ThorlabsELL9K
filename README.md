@@ -1,5 +1,5 @@
-# ThorlabsELLK9
-Command line control for Thorlabs ELLK9 linear stage.
+# ThorlabsELL9K
+Command line control for Thorlabs ELL9K linear stage.
 
 See
 ```
