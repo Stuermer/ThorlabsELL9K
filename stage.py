@@ -18,7 +18,7 @@ def get_position(address):
                   "slot {}".format(position, int(position[3:], 16), int(position[3:], 16) // 31))
 
 
-def move_stage(pos, address):
+def set_position(pos, address):
     with serial.Serial(address) as s:
         logger.info("Move to Position: {}.".format(pos))
         s.write(b"0gs")
@@ -61,6 +61,6 @@ if __name__ == "__main__":
     parser.add_argument('-d', '--device', type=str, default='/dev/ttyUSB0', help='address of linear stage.')
     args = parser.parse_args()
     if args.position is not None:
-        move_stage(args.position, args.device)
+        set_position(args.position, args.device)
     else:
         get_position(args.device)
