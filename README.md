@@ -11,7 +11,7 @@ for usage.
 ## Particular use as shutter
 Use *ldls.sh* to toggle the shutter for the LDLS light source:
 ```bash
-./ldls
+./ldls.sh
 ``` 
 shows current stage position:
 
@@ -20,11 +20,11 @@ shows current stage position:
 
 use 
 ```
-./ldls 1
+./ldls.sh 1
 ```
 to open shutter and
 ```
-./ldls 0
+./ldls.sh 0
 ```
 to close the shutter.
 Prints 'OK' if successful. Errormessage otherwise.
